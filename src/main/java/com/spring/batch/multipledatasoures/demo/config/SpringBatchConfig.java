@@ -35,6 +35,7 @@ public class SpringBatchConfig {
      * .start(step)
      * .build();
      * <p>
+     *
      * Step 2. create step skeleton
      * <p>
      * Step step = stepBuilderFactory.get("ETL-db-load-step")
