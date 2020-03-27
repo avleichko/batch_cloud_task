@@ -9,9 +9,9 @@ public class Processor implements ItemProcessor<FeedGenerationWorkerStatus, Feed
 
     @Override
     public FeedGenerationWorkerStatus process(FeedGenerationWorkerStatus feedGenerationWorkerStatus) throws Exception {
-        feedGenerationWorkerStatus.setTriggeredBy("Oleksandr Velichko");
+        feedGenerationWorkerStatus.setTriggeredBy("mck team");
         feedGenerationWorkerStatus.setMarket("UA");
-        feedGenerationWorkerStatus.setMarket("US");
+        feedGenerationWorkerStatus.setBrand("MCK");
         return feedGenerationWorkerStatus;
     }
 }
