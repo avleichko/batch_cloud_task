@@ -12,6 +12,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class FeedGenerationWorkerStatusService {
         this.job = job;
     }
 
+    @Scheduled(cron = "* */5 * * * ?")
     public BatchStatus runBatch() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
         final JobExecution run = jobLauncher.run(job,
                 new JobParametersBuilder().addLong("uniqueness", System.nanoTime()).toJobParameters());
