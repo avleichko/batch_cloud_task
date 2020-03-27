@@ -15,6 +15,7 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -50,5 +51,20 @@ public class FeedGenerationWorkerStatusService {
 
     public List<FeedGenerationWorkerStatus> getAll(){
         return workerStatusRepository.findAll();
+    }
+
+    public void initDatabase() {
+        List<FeedGenerationWorkerStatus> statusList = new ArrayList<>();
+        for(int i=0; i<10000; i++) {
+            FeedGenerationWorkerStatus status = new FeedGenerationWorkerStatus();
+            status.setBrand("mck");
+            status.setTriggeredBy("Alex");
+            status.setFeedGenerationType("OLAPIC");
+            status.setFeedGenerationFlow("FULL");
+            status.setMarket("US");
+            status.setExecutionStatus("ok");
+            statusList.add(status);
+        }
+        workerStatusRepository.saveAll(statusList);
     }
 }
