@@ -34,7 +34,8 @@ public class FeedGenerationWorkerStatusService {
         this.job = job;
     }
 
-    @Scheduled(cron = "${batch.cron}")
+    //TODO uncommentMe when will show demo
+    //@Scheduled(cron = "${batch.cron}")
     public BatchStatus runBatch() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
         final JobExecution run = jobLauncher.run(job,
                 new JobParametersBuilder().addLong("uniqueness", System.nanoTime()).toJobParameters());
