@@ -1,4 +1,4 @@
-package com.spring.batch.multipledatasoures.demo.config;
+package com.spring.batch.multipledatasoures.demo.config.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
