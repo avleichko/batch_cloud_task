@@ -33,7 +33,7 @@ public class FeedGenerationWorkerStatusService {
         this.job = job;
     }
 
-    @Scheduled(cron = "* */5 * * * ?")
+    @Scheduled(cron = "${batch.cron}")
     public BatchStatus runBatch() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
         final JobExecution run = jobLauncher.run(job,
                 new JobParametersBuilder().addLong("uniqueness", System.nanoTime()).toJobParameters());
