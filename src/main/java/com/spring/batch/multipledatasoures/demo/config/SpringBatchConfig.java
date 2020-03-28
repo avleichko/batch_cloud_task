@@ -74,19 +74,4 @@ public class SpringBatchConfig {
         return job;
     }
 
-
-
-    @Bean
-    public RepositoryItemReader<FeedGenerationWorkerStatus> itemReader() {
-        RepositoryItemReader<FeedGenerationWorkerStatus> reader = new RepositoryItemReader<>();
-        reader.setRepository(repository);
-        reader.setMethodName("findAll");
-        reader.setName("spring-data-repos-reader");
-        Map<String, Sort.Direction> sort = new HashMap<String, Sort.Direction>();
-        sort.put("id", Sort.Direction.ASC);
-        reader.setSort(sort);
-
-        reader.setSort(sort);
-        return reader;
-    }
 }

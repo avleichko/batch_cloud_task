@@ -1,6 +1,7 @@
 package com.spring.batch.multipledatasoures.demo.controller;
 
 import com.spring.batch.multipledatasoures.demo.model.FeedGenerationWorkerStatus;
+import com.spring.batch.multipledatasoures.demo.service.DevtoolService;
 import com.spring.batch.multipledatasoures.demo.service.FeedGenerationWorkerStatusService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.BatchStatus;
@@ -25,9 +26,11 @@ import java.util.List;
 public class OperationsController {
 
     private final FeedGenerationWorkerStatusService feedGenerationWorkerStatusService;
+    private final DevtoolService devtoolService;
 
-    public OperationsController(FeedGenerationWorkerStatusService feedGenerationWorkerStatusService, JobLauncher jobLauncher, Job job) {
+    public OperationsController(FeedGenerationWorkerStatusService feedGenerationWorkerStatusService, JobLauncher jobLauncher, Job job, DevtoolService devtoolService) {
         this.feedGenerationWorkerStatusService = feedGenerationWorkerStatusService;
+        this.devtoolService = devtoolService;
     }
 
     /**
@@ -51,6 +54,6 @@ public class OperationsController {
     @PostMapping("/init")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public  void createInitData(){
-        feedGenerationWorkerStatusService.initDatabase();
+        devtoolService.initDatabase();
     }
 }
