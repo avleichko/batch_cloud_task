@@ -12,13 +12,11 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.RepositoryItemReader;
-import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 
-import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 

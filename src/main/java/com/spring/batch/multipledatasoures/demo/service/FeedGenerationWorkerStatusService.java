@@ -13,7 +13,6 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
-import org.springframework.retry.annotation.CircuitBreaker;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
@@ -64,7 +63,8 @@ public class FeedGenerationWorkerStatusService {
     }
 
     /**
-     * Method can be parametrised
+     * Method can be used in case if we met some unexpected errors
+     *
      * */
     @Recover
     public BatchStatus recover(CommonBatchServiceException e){
@@ -77,20 +77,5 @@ public class FeedGenerationWorkerStatusService {
 
     public List<FeedGenerationWorkerStatus> getAll(){
         return workerStatusRepository.findAll();
-    }
-
-    public void initDatabase() {
-        List<FeedGenerationWorkerStatus> statusList = new ArrayList<>();
-        for(int i=0; i<1000; i++) {
-            FeedGenerationWorkerStatus status = new FeedGenerationWorkerStatus();
-            status.setBrand("mck");
-            status.setTriggeredBy("Alex");
-            status.setFeedGenerationType("OLAPIC");
-            status.setFeedGenerationFlow("FULL");
-            status.setMarket("US");
-            status.setExecutionStatus("ok");
-            statusList.add(status);
-        }
-        workerStatusRepository.saveAll(statusList);
     }
 }
