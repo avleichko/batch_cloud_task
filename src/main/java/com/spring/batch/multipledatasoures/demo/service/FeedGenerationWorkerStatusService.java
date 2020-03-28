@@ -1,5 +1,6 @@
 package com.spring.batch.multipledatasoures.demo.service;
 
+import com.spring.batch.multipledatasoures.demo.exception.CommonBatchServiceException;
 import com.spring.batch.multipledatasoures.demo.model.FeedGenerationWorkerStatus;
 import com.spring.batch.multipledatasoures.demo.repository.WorkerStatusRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,9 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.retry.annotation.CircuitBreaker;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,9 +37,19 @@ public class FeedGenerationWorkerStatusService {
         this.job = job;
     }
 
+    /**
+     * We can also use @CircuitBraker annotation from spring retry library
+     *
+     * */
     //TODO uncommentMe when will show demo
     //@Scheduled(cron = "${batch.cron}")
+    @Retryable(value = {CommonBatchServiceException.class})
     public BatchStatus runBatch() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+
+        if(Math.random() >.5){
+            throw new CommonBatchServiceException("something went wrong");
+        }
+
         final JobExecution run = jobLauncher.run(job,
                 new JobParametersBuilder().addLong("uniqueness", System.nanoTime()).toJobParameters());
 
@@ -50,13 +63,25 @@ public class FeedGenerationWorkerStatusService {
         return run.getStatus();
     }
 
+    /**
+     * Method can be parametrised
+     * */
+    @Recover
+    public BatchStatus recover(CommonBatchServiceException e){
+        log.error("recovered");
+        log.error("recovered");
+        log.error("recovered");
+        log.error("recovered");
+        return BatchStatus.STOPPED;
+    }
+
     public List<FeedGenerationWorkerStatus> getAll(){
         return workerStatusRepository.findAll();
     }
 
     public void initDatabase() {
         List<FeedGenerationWorkerStatus> statusList = new ArrayList<>();
-        for(int i=0; i<10000; i++) {
+        for(int i=0; i<1000; i++) {
             FeedGenerationWorkerStatus status = new FeedGenerationWorkerStatus();
             status.setBrand("mck");
             status.setTriggeredBy("Alex");
