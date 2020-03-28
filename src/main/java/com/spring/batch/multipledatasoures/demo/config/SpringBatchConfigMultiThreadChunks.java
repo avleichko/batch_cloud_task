@@ -14,10 +14,12 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-@Configuration
-@EnableBatchProcessing
-public class SpringBatchConfig {
+//@Configuration
+//@EnableBatchProcessing
+public class SpringBatchConfigMultiThreadChunks {
 
 
     /**
@@ -39,6 +41,21 @@ public class SpringBatchConfig {
      * .build();
      * <p>
      * Step 3.
+     *
+     * Add ThreadPoolTaskExecutor taskExecutor
+     *
+     * Step step = stepBuilderFactory.get("ETL-db-load-step")
+     *                 .<FeedGenerationWorkerStatus, FeedGenerationWorkerStatus>chunk(500)  //  size of elements that needs to be parsed
+     *                 .reader(itemReader)                                                           // method responcible for read
+     *                 .processor(itemProcessor)                                                     // method responcible for process
+     *                 .writer(itemWriter)                                                           // methods that perform an actual migration
+     *                 <b>.taskExecutor(taskExecutor)</>
+     *                 .build();
+     *
+     *         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+     *         taskExecutor.setCorePoolSize(4);
+     *         taskExecutor.setMaxPoolSize(4);
+     *         taskExecutor.afterPropertiesSet();
      */
 
     @Autowired
@@ -51,11 +68,17 @@ public class SpringBatchConfig {
                    ItemProcessor<FeedGenerationWorkerStatus, FeedGenerationWorkerStatus> itemProcessor,
                    ItemWriter<FeedGenerationWorkerStatus> itemWriter) {
 
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setCorePoolSize(4);
+        taskExecutor.setMaxPoolSize(4);
+        taskExecutor.afterPropertiesSet();
+
         Step step = stepBuilderFactory.get("ETL-db-load-step")
                 .<FeedGenerationWorkerStatus, FeedGenerationWorkerStatus>chunk(500)  //  size of elements that needs to be parsed
                 .reader(itemReader)                                                           // method responcible for read
                 .processor(itemProcessor)                                                     // method responcible for process
                 .writer(itemWriter)                                                           // methods that perform an actual migration
+                .taskExecutor(taskExecutor)
                 .build();
 
 

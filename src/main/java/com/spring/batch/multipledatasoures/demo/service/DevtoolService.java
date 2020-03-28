@@ -22,7 +22,7 @@ public class DevtoolService {
     public void initDatabase() {
         log.info("adding record to the database");
         List<FeedGenerationWorkerStatus> statusList = new ArrayList<>();
-        for(int i=0; i<1000; i++) {
+        for(int i=0; i<10000; i++) {
             FeedGenerationWorkerStatus status = new FeedGenerationWorkerStatus();
             status.setBrand("mck");
             status.setTriggeredBy("Alex");
