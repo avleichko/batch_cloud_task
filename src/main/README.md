@@ -9,8 +9,8 @@ Agenda:
 ### 6. Spring batch scalability 
 
 * 6.1 multithreaded steps - each chunk in a new thread (cons no restartability)
-* 6.2 parallel steps executoion
-* 6.3 async item processor/ async item wrier
+* 6.2 parallel steps executoion - see paralel steps api
+* 6.3 async item processor/ async item wrier - AsyncItemProcessor class is used byt it is not aviliablae in  4.2.1.RELEASE
 * 6.4 partitioning
 * 6.5 remote chunking
 
